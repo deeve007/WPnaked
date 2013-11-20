@@ -1,12 +1,12 @@
 <?php
 /**
- * Zavablank functions and definitions
+ * NakedTheme functions and definitions
  *
  * For more information on hooks, actions, and filters, see http://codex.wordpress.org/Plugin_API.
  *
  * @package		WordPress
- * @subpackage	Zavablank
- * @since		Zavablank 1.0
+ * @subpackage	NakedTheme
+ * @since		NakedTheme 1.0
  */
  
 
