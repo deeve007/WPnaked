@@ -15,6 +15,7 @@
 /*-----------------------------------------------------------------------------------*/
 add_theme_support( 'automatic-feed-links' );
 
+
 /*-----------------------------------------------------------------------------------*/
 /* Add basic Wordpress features support to theme
 /*-----------------------------------------------------------------------------------*/
@@ -24,16 +25,27 @@ register_nav_menus(array('primary' => 'Primary Navigation'));
 /* Remove ugly Wordpress toolbar from frontend */
 add_filter('show_admin_bar', '__return_false');
 
+
 /*-----------------------------------------------------------------------------------*/
 /* Enqueue Styles and Scripts
 /*-----------------------------------------------------------------------------------*/
-function load_the_scripts()  { 
-	
-	// load html5shiv for IE only (is there Wordpress conditional for ie9 or less?)
+
+// add ie conditional html5 shim to header for html5 support for ie8 and below
+function add_ie_html5shim () {
 	global $is_IE;
-	if ( $is_IE ) {
-		wp_enqueue_script( 'load-html5shiv', get_template_directory_uri() . '/js/html5shiv.js', array( 'jquery' ),null,true );
+	if ($is_IE) {
+		echo '<!--[if lt IE 9]>';
+    	echo '<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>';
+    	echo '<![endif]-->';
 	}
+}
+add_action('wp_footer', 'add_ie_html5shim');
+
+function load_the_scripts()  { 
+
+	// jquery deregister and re-enqueue to load in footer rather than head
+	wp_deregister_script( 'jquery' );
+	wp_enqueue_script( 'jquery', '/wp-includes/js/jquery/jquery.js', false, null, true );
 	
 	// load fluidvids
 	wp_enqueue_script( 'load-fitvids', get_template_directory_uri() . '/js/fluidvids.min.js','',null,true );
@@ -42,10 +54,12 @@ function load_the_scripts()  {
 	wp_enqueue_script( 'load-themejs', get_template_directory_uri() . '/js/theme.js', array( 'jquery' ),null,true );
 	
 	// load CSS reset
-	wp_enqueue_style( 'load-reset', 'http://yui.yahooapis.com/3.13.0/build/cssreset/cssreset-min.css','', 'screen' );
+	wp_enqueue_style( 'load-reset', '//yui.yahooapis.com/3.13.0/build/cssreset/cssreset-min.css','', 'screen' );
+	// if you would prefer to use normalize rather than a total reset simply comment out the above line and uncomment the below
+	// wp_enqueue_style( 'load-reset', '//normalize-css.googlecode.com/svn/trunk/normalize.css','', 'screen' );
 	
 	// load theme stylesheet
-	wp_enqueue_style( 'load-style', get_template_directory_uri() . '/style.css','', 'screen' );
+	wp_enqueue_style( 'load-style', get_template_directory_uri() . '/style.css', array( 'load-reset' ), 'screen' );
 	
 	// add support for child themes without needing to manually import parent theme style.css via @import
 	// add after parent theme css so it can override settings if required
@@ -56,6 +70,7 @@ function load_the_scripts()  {
   
 }
 if (!is_admin()) add_action("wp_enqueue_scripts", "load_the_scripts");
+
 
 /*-----------------------------------------------------------------------------------*/
 /* Register sidebar(s)
