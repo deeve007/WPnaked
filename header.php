@@ -41,7 +41,7 @@
 		<h2><?php bloginfo( 'description' ); ?></h2>
 			
 		<nav class="main-navigation" role="navigation">
-			<?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
+			<?php wp_nav_menu( array( 'container' => false, 'theme_location' => 'primary' ) ); ?>
 		</nav><!-- .main-navigation -->
 	</header>
 	<!-- end header -->

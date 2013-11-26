@@ -1,4 +1,4 @@
-Naked Theme
+WP Naked
 ============
 
 A totally naked starter theme for Wordpress projects.
